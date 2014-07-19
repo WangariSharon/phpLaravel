@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,17 +7,27 @@
     <title>Users App</title>
 
     <!-- Bootstrap -->
-		{{HTML::style('assets/css/bootstrap.min.css')}}
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
 
   </head>
   <body>
-  	<div class="container">
-  		@yield('content')
-  	</div>
+    <div class="container"> 
+      @if(Session::has('errors'))
+        <div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <?php foreach ($errors->all() as $error): ?>
+        <li>{{ $error }}</li>
+        <?php endforeach ?> 
+      </div>
+      @endif
+      @yield('content')
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-		{{HTML::script('assets/js/bootstrap.min.js')}}
+    {{HTML::script('assets/js/bootstrap.min.js')}}
   </body>
 </html>

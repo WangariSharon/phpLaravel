@@ -20,7 +20,8 @@ class UsersController extends \BaseController {
 	 */
 	public function create()
 	{
-		return View::make('users.create');
+		$marital_status = array('Single', 'Divorced', 'Enagaged', 'Complicated', 'Married');
+		return View::make('users.create', compact('marital_status'));
 	}
 
 
@@ -31,7 +32,33 @@ class UsersController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		
+		$dob = Input::get('dob');
+		$datestring = Input::get('dob')['year'] .' - '. Input::get('dob')['month'] .' - '. Input::get('dob')['day'];
+		
+		// Merge new date string back to input
+		Input::merge(['dob' => $datestring]);
+		
+		// Capture form data
+		$payload = Input::all();
+		
+		// validate data and return errors if any
+		$validator = Validator::make($payload, User::$rules);
+
+		if($validator->passes())
+		{
+			$user =  User::create($payload);
+			if($user)
+			{
+				return Redirect::route('users.show', array($user->id));
+			}
+		}
+		else
+		{
+			// Redirect user back to the form 
+			return Redirect::back()->withErrors($validator);
+		}
+
 	}
 
 
@@ -43,7 +70,8 @@ class UsersController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+     	// return View::find(1);
+     	return User::find(1);
 	}
 
 
