@@ -27,6 +27,12 @@
       <td>
         <a href="{{route('users.show', array($user->id))}}" class="btn btn-primary">View</a>
 
+        <!-- Needs better formating -->
+         <!--  {{ Form::open(array('method' => 'DELETE', 'route' => array('users.destroy', $user->id))) }}                       
+           {{ Form::submit('Delete', array('class'=> 'btn btn-danger')) }}
+           {{ Form::close() }} -->
+
+
       </td>
     </tr>
     @endforeach

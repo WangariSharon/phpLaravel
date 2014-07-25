@@ -9,6 +9,12 @@
 			<a href="{{route('users.index')}}" class="btn btn-default">Back</a>
 			<!-- Link to edit profile -->
 			<a href="{{ route('users.edit', array($user->id))}}" class="btn btn-default">Edit Profile</a>
+	
+           {{ Form::open(array('method' => 'DELETE', 'route' => array('users.destroy', $user->id))) }}                       
+           {{ Form::submit('Delete', array('class'=> 'btn btn-danger')) }}
+           {{ Form::close() }}
+			  
+
 
 		</div>
 	</div>
