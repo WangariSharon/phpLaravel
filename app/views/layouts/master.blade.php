@@ -8,6 +8,7 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
 
   </head>
   <body>
@@ -22,6 +23,16 @@
         <?php endforeach ?> 
       </div>
       @endif
+
+      @if(Session::has('alert'))
+      <div class="alert alert-info alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        {{ Session::get('alert') }}
+        @endif
+      </div>
       @yield('content')
     </div>
 

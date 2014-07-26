@@ -9,7 +9,9 @@ class UsersController extends \BaseController {
 	 */
 	public function index()
 	{
-		return View::make('users.index');
+		// pull all users from database
+		$users = User::all();
+		return View::make('users.index', compact('users'));
 	}
 
 
@@ -31,9 +33,20 @@ class UsersController extends \BaseController {
 	 * @return Response
 	 */
 	public function store()
+<<<<<<< HEAD
 	{	
+=======
+	{
+		
+		$dob = Input::get('dob');
+		$datestring = $dob['year'] .' - '. $dob['month'] .' - '. $dob['day'];
+		
+		// Merge new date string back to input
+		Input::merge(['dob' => $datestring]);
+		
+>>>>>>> origin/master
 		// Capture form data
-		$payload = Input::all();
+		$payload = Input::except('_token');
 		
 		// validate data and return errors if any
 		$validator = Validator::make($payload, User::$rules);
@@ -75,9 +88,18 @@ class UsersController extends \BaseController {
 	 */
 	public function show($id)
 	{
+<<<<<<< HEAD
 		
 		$user = User::find($id);
 		return View::make('users.show', compact('user'));
+=======
+     	// return View::find(1);
+     	// return User::find(1);
+     	// picking the user with set id, cause it's what's unique
+     	$user = User::find($id);
+
+     	return View::make('users.show', compact('user'));
+>>>>>>> origin/master
 	}
 
 
@@ -89,8 +111,17 @@ class UsersController extends \BaseController {
 	 */
 	public function edit($id)
 	{
+<<<<<<< HEAD
 		$user = User::find($id);
 		return View::make('users.edit', compact('user'));
+=======
+		//Fetch record
+		$user = User::find($id);
+		$marital_status = array('Single', 'Divorced', 'Enagaged', 'Complicated', 'Married');
+
+		return View::make('users.edit', compact('user', 'marital_status'));
+
+>>>>>>> origin/master
 	}
 
 
@@ -102,7 +133,39 @@ class UsersController extends \BaseController {
 	 */
 	public function update($id)
 	{
+<<<<<<< HEAD
 		
+=======
+
+		$user = User::find($id);
+		//Format dob 
+		$dob = Input::get('dob');
+		$datestring = $dob['year'] .' - '. $dob['month'] .' - '. $dob['day'];
+		
+		// Merge new date string back to input
+		Input::merge(['dob' => $datestring]);
+		
+		// Capture form data
+		$payload = Input::except('_token');
+		
+		// validate data and return errors if any
+		$validator = Validator::make($payload, User::$updateRules);
+
+		if($validator->passes())
+		{
+			// $user =  User::find($id);
+			$user->update($payload);
+			{
+				return Redirect::route('users.show', array($user->id))->with('alert', 'Record Updated');
+			}
+		}
+		else
+		{
+			// Redirect user back to the form 
+			return Redirect::back()->withErrors($validator);
+		}
+
+>>>>>>> origin/master
 	}
 
 
@@ -114,8 +177,13 @@ class UsersController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+<<<<<<< HEAD
 		User::find($id)->delete();
         return Redirect::route('users.index');
+=======
+		 User::find($id)->delete();
+        	 return Redirect::route('users.index');
+>>>>>>> origin/master
 	}
 
 // 	public function funpage()
