@@ -15,13 +15,13 @@ class UsersController extends \BaseController {
 
 	/**
 	 * Show the form for creating a new resource.
-	 *controller:make
+	 *
 	 * @return Response
 	 */
 	public function create()
 	{
-		$marital_status = array('Single', 'Divorced', 'Enagaged', 'Complicated', 'Married');
-		return View::make('users.create', compact('marital_status'));
+		// $marital_status = array('Single', 'Divorced', 'Enagaged', 'Complicated', 'Married');
+		return View::make('users.create');
 	}
 
 
@@ -31,14 +31,7 @@ class UsersController extends \BaseController {
 	 * @return Response
 	 */
 	public function store()
-	{
-		
-		$dob = Input::get('dob');
-		$datestring = Input::get('dob')['year'] .' - '. Input::get('dob')['month'] .' - '. Input::get('dob')['day'];
-		
-		// Merge new date string back to input
-		Input::merge(['dob' => $datestring]);
-		
+	{	
 		// Capture form data
 		$payload = Input::all();
 		
@@ -48,6 +41,18 @@ class UsersController extends \BaseController {
 		if($validator->passes())
 		{
 			$user =  User::create($payload);
+			// $image = $payload['photo'];
+			// var_dump($image);
+			// die('here');
+			if(Input::hasFile('photo')){
+				$file = Input::file('photo');
+				$destination = public_path().'/uploads/';
+				$filename = $file->getClientOriginalName();
+				$sucess = $file->move($destination, $filename);
+				$payload['photo'] = $filename;
+			}
+
+			$payload['photo'] = $payload['photo'];
 			if($user)
 			{
 				return Redirect::route('users.show', array($user->id));
@@ -70,8 +75,9 @@ class UsersController extends \BaseController {
 	 */
 	public function show($id)
 	{
-     	// return View::find(1);
-     	return User::find(1);
+		
+		$user = User::find($id);
+		return View::make('users.show', compact('user'));
 	}
 
 
@@ -83,7 +89,8 @@ class UsersController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+		$user = User::find($id);
+		return View::make('users.edit', compact('user'));
 	}
 
 
@@ -95,7 +102,7 @@ class UsersController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		
 	}
 
 
@@ -107,8 +114,14 @@ class UsersController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		User::find($id)->delete();
+        return Redirect::route('users.index');
 	}
+
+// 	public function funpage()
+// 	{
+// 		$user = User::find($id);
+// 		return View::make('users.funpage', compact('user'));	}
 
 
 }
